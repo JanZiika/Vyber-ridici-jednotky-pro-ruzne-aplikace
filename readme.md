@@ -178,7 +178,7 @@ Vyplňte rozhodovací matici. Jako vzor poslouží vyplněný sloupec pro **Vzor
 Co je to tzv. **SoftPLC** a jak umožňuje průmyslovému PC (iPC) kombinovat výhody operačního systému Windows/Linux a deterministického řízení reálného času v jediném fyzickém počítači?
 
 *Vaše odpověď:*
-`...`
+`SoftPLC (Software PLC) je technologie, která mění běžný počítač (nejčastěji průmyslové PC – iPC) na plnohodnotný programovatelný automat. Místo jednoúčelového hardwaru (jako u klasických PLC) běží řídicí logika jako softwarová aplikace přímo na procesoru počítače.`
 
 ---
 
