@@ -290,7 +290,7 @@ Jako vedoucí inženýr jste převzal projekt po nezkušeném brigádníkovi, kt
 
 | Oblast auditu | Zjištěná vada v amatérském návrhu | Fyzikální mechanismus selhání (proč to selže) | Následek pro stroj nebo obsluhu |
 | :--- | :--- | :--- | :--- |
-| **Elektromagnetická kompatibilita (EMC)** | `...` | Napěťové špičky z indukční zátěže hydraulických ventilů způsobí restart MCU... | `...` |
+| **Elektromagnetická kompatibilita (EMC)** | `Použití Arduina a hobby modulů bez stínění v blízkosti výkonové hydrauliky.` | Napěťové špičky z indukční zátěže hydraulických ventilů způsobí restart MCU... | `...` |
 | **Mechanická a teplotní odolnost** | PLA plast a montáž na těleso lisu | `...` | `...` |
 | **Konektivita a propojení vodičů** | DuPont propojovací kabely bez aretace | `...` | `...` |
 | **Funkční bezpečnost (Safety)** | Nouzový stop řešený softwarově v čipu | `...` | `...` |
