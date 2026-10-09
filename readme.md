@@ -258,7 +258,17 @@ Provoz v letních vedrech (+45 °C na slunci): Skříň by měla být opatřena 
 Proč se u čerpadel v čistírnách odpadních vod a jímkách striktně upřednostňuje měření hladiny pomocí proudového signálu 4–20 mA před napěťovým signálem 0–10 V a proč se do jímky nepoužívá ultrazvukový senzor, pokud v ní vzniká hustá pěna?
 
 *Vaše odpověď:*
-`...`
+`Proč se upřednostňuje signál 4–20 mA před 0–10 V?
+
+Odolnost proti EMC rušení: V okolí čerpacích stanic pracují výkonné motory a frekvenční měniče; proudová smyčka je vůči tomuto rušení výrazně odolnější než napěťový signál.
+
+Nezávislost na délce kabelu: Na dlouhých vedeních nevzniká úbytek hodnoty vlivem odporu kabelu.
+
+Detekce přerušení vodiče (živá nula / live zero): Rozsah začíná na 4 mA. Pokud systém naměří 0 mA, okamžitě detekuje poruchu či přerušení kabelu (což u 0–10 V nelze odlišit od reálné nulové hladiny).
+
+Proč se v jímce nepoužívá ultrazvukový senzor při vzniku husté pěny?
+
+Hustá pěna, bioplyn a výpary v odpadních vodách působí jako silný akustický absorbér. Zvukovou vlnu zultrazvukového senzoru pohltí nebo rozptýlí do stran, takže se echo neodrazí zpět a měření zcela selže nebo vykazuje chybové hodnoty. V takovém prostředí je nutné použít hydrostatickou sondu nebo radar.`
 
 ---
 
