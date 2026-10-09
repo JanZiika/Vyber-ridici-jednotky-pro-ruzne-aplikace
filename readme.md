@@ -290,16 +290,16 @@ Jako vedoucí inženýr jste převzal projekt po nezkušeném brigádníkovi, kt
 
 | Oblast auditu | Zjištěná vada v amatérském návrhu | Fyzikální mechanismus selhání (proč to selže) | Následek pro stroj nebo obsluhu |
 | :--- | :--- | :--- | :--- |
-| **Elektromagnetická kompatibilita (EMC)** | `Použití Arduina a hobby modulů bez stínění v blízkosti výkonové hydrauliky.` | Napěťové špičky z indukční zátěže hydraulických ventilů způsobí restart MCU... | `...` |
-| **Mechanická a teplotní odolnost** | PLA plast a montáž na těleso lisu | `...` | `...` |
-| **Konektivita a propojení vodičů** | DuPont propojovací kabely bez aretace | `...` | `...` |
-| **Funkční bezpečnost (Safety)** | Nouzový stop řešený softwarově v čipu | `...` | `...` |
+| **Elektromagnetická kompatibilita (EMC)** | `Použití Arduina a hobby modulů bez stínění v blízkosti výkonové hydrauliky.` | Napěťové špičky z indukční zátěže hydraulických ventilů způsobí restart MCU napěťové špičky a elektromagnetické rušení z indukční zátěže (cívky ventilů) indukují proudy do slaboproudých vodičů, což způsobí zamrznutí MCU nebo falešné sepnutí výstupů. | `Neřízený samovolný pohyb lisu, ohrožení obsluhy stojící v pracovním prostoru.` |
+| **Mechanická a teplotní odolnost** | PLA plast a montáž na těleso lisu | `Teplota skelného přechodu PLA je nízká (cca 60 °C); vibrace lisu navíc způsobují únavové namáhání materiálu a jeho prasknutí.` | `Roztavení nebo rozpad krytu, odhalení živých částí (230 V / 400 V) a riziko úrazu elektrickým proudem.` |
+| **Konektivita a propojení vodičů** | DuPont propojovací kabely bez aretace | `Působením vibrací lisu dochází k vyklepání konektorů z pinů, vzniku přechodových odporů a přerušení obvodů (nebo vzniku zkratů).` | `Náhlá ztráta kontroly nad strojem, nefunkčnost snímačů a akčních členů, selhání provozních stavů.` |
+| **Funkční bezpečnost (Safety)** | Nouzový stop řešený softwarově v čipu | `Software se může zacyklit, zamrznout, nebo může dojít k poškození mikrokontroléru rušením. Softwarové odpojení nezaručuje bezpečný stav.` | `Selhání nouzového zastavení při krizové situaci, lis nezastaví a dojde k těžkému úrazu obsluhy.` |
 
 2. **Návrh profesionálního nápravného řešení:**
    - Navrhněte, jakými certifikovanými průmyslovými komponenty tento celek nahradíte při zachování minimálního rozpočtu:
-     - *Náhrada řídicí jednotky:* `...` *(např. certifikované průmyslové programovatelné relé s montáží na DIN lištu a krytím)*
-     - *Náhrada napájecího zdroje:* `...` *(např. stabilizovaný průmyslový zdroj 24 V DC na DIN lištu s ochranou proti přepětí)*
-     - *Způsob zapojení bezpečnostního okruhu (Safety):* Jak musí být podle norem zapojeno tlačítko Emergency Stop (E-Stop)? Smí být spoléháno pouze na software mikrokontroléru? Zdůvodněte: `...`
+     - *Náhrada řídicí jednotky:* `Kompaktní průmyslové PLC určené pro montáž na DIN lištu s robustním krytím (např. Siemens LOGO! 24RCE nebo Schneider Modicon M221)` *(např. certifikované průmyslové programovatelné relé s montáží na DIN lištu a krytím)*
+     - *Náhrada napájecího zdroje:* `Náhrada napájecího zdroje: Průmyslový stabilizovaný spínaný zdroj 24 V DC na DIN lištu s integrovanou ochranou proti zkratu a přepětí (např. Siemens SITOP).` *(např. stabilizovaný průmyslový zdroj 24 V DC na DIN lištu s ochranou proti přepětí)*
+     - *Způsob zapojení bezpečnostního okruhu (Safety):* Jak musí být podle norem zapojeno tlačítko Emergency Stop (E-Stop)? Smí být spoléháno pouze na software mikrokontroléru? Zdůvodněte: `Na software mikrokontroléru se v oblasti bezpečnosti nesmí spoléhat, protože softwarové vybavení může selhat nebo zamrznout. Bezpečnostní řetězec musí být čistě hardwarový a nezávislý na běhu PLC.`
 
 > **Kritéria hodnocení úlohy 5 (bodování a známka):**
 > - :star: **Odborná úroveň identifikace závad (35 %):** Přesná technická terminologie (např. elektromagnetická indukce, absence odrušovacích varistorů, skelný přechod PLA plastu při 60 °C, studené spoje a vyklepání konektorů vibracemi).
@@ -320,7 +320,9 @@ Jako vedoucí inženýr jste převzal projekt po nezkušeném brigádníkovi, kt
 Proč hobby reléové moduly s optočleny určené pro Arduino v průmyslovém rozváděči často shoří nebo způsobí trvalé sepnutí zátěže (tzv. přivaření kontaktů), i když jmenovitý proud relé je 10 A a cívka stykače odebírá jen 0,5 A?
 
 *Vaše odpověď:*
-`...`
+`Chybějící zhášecí členy (freewheeling diodes / varistory): Při spínání indukční zátěže (cívky stykače/ventilu) vznikají při rozpojení kontaktů obrovské napěťové špičky (indukční špičky). Tyto špičky na kontaktech levných relé vytvářejí elektrický oblouk.
+
+Přivaření kontaktů: Poddimenzované materiály kontaktů na hobby modulech se vlivem tohoto oblouku a proudových rázů doslova „přivaří“ k sobě (zpecky se spojí), takže relé zůstane trvale sepnuté i po odpojení cívky relé, což vede k nekontrolovanému běhu stroje.`
 
 ---
 
@@ -361,4 +363,6 @@ Představte si, že management firmy rozhoduje mezi dvěma variantami řízení 
 Co znamená pojem **MTBF (Mean Time Between Failures)** v datasheetech průmyslových řídicích jednotek a jaký vliv má okolní teplota v rozváděči na tuto hodnotu (tzv. Arrheniovo pravidlo)?
 
 *Vaše odpověď:*
-`...`
+`MTBF (Mean Time Between Failures): Střední doba mezi poruchami; statistický údaj udávající spolehlivost a předpokládanou životnost bezporuchového provozu zařízení.
+
+Vliv teploty (Arrheniovo pravidlo / pravidlo deseti stupňů): S rostoucí vnitřní teplotou v rozváděči se exponenciálně zvyšuje rychlost chemických a fyzikálních degradací polovodičů a elektrolytických kondenzátorů. Zhruba platí, že zvýšení provozní teploty o 10 °C snižuje životnost elektroniky a hodnotu MTBF přibližně na polovinu. Proto je správný termomanagement (chlazení/klimatizace rozváděče) naprosto klíčový pro spolehlivost.`
