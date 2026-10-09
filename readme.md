@@ -210,31 +210,33 @@ Jste v roli projektanta automatizace. Zákazník poptává zhotovení řízení 
 
 | Typ signálu | Požadavek aplikace (kusy) | Popis signálů v aplikaci | Počet po započtení rezervy (+20 %) |
 | :--- | :--- | :--- | :--- |
-| **Digitální vstup (DI)** | `...` | `...` | `...` |
-| **Digitální výstup (DO) – reléový** | `...` | `...` | `...` |
-| **Digitální výstup (DO) – tranzistorový** | `...` | `...` | `...` |
-| **Analogový vstup (AI)** | `...` | `...` | `...` |
-| **Analogový výstup (AO)** | `...` | `...` | `...` |
+| **Digitální vstup (DI)** | `4` | `3× plovákový spínač (suchoběh, zapínání, přepad) + 1× porucha termistoru motoru` | `5 (reálně 14 na CPU)` |
+| **Digitální výstup (DO) – reléový** | `2` | `2× ovládání cívki stykačů čerpadlopohonů (230 V AC)` | `3 (reálně 10 na CPU)` |
+| **Digitální výstup (DO) – tranzistorový** | `1` | `1× opticko-akustický maják (24 V DC / 0,3 A)` | `2` |
+| **Analogový vstup (AI)** | `1` | `1× hydrostatická sonda výšky hladiny (4–20 mA)` | `2` |
+| **Analogový výstup (AO)** | `1` | `1× řízení otáček frekvenčního měniče (0–10 V)` | `2` |
 
 2. **Výběr konkrétního hardwaru z katalogu výrobce:**
    - Navrhněte konkrétní přístroj z praxe (např. *Siemens LOGO! 24RCE + rozšiřující moduly*, *Siemens S7-1200 CPU 1212C/1214C DC/DC/RLY*, *Schneider Modicon M221*, *Eaton easyE4-UC-12RC1*, *WAGO 750*, případně průmyslový IoT kontrolér typu *UniPi Neuron*).
    - Uveďte:
-     - Výrobce a přesný model CPU: `...`
-     - Objednací kód (Part Number / Order Code): `...`
-     - Rozšiřující moduly (pokud jsou nutné pro AI 4–20 mA nebo AO 0–10 V): `...`
-     - Napájecí napětí zvolené jednotky: `...`
-     - Jak je vyřešeno odesílání dat na dispečink: `...`
-     - Odkaz na technický list (datasheet): `...`
-     - Odkazy na další použité zdroje: `...`
+     - Výrobce a přesný model CPU: `Siemens SIMATIC S7-1200, CPU 1214C DC/DC/RLY`
+     - Objednací kód (Part Number / Order Code): `6ES7214-1HG40-0XB0 / 6AG1214-1HG40-5XB0`
+     - Rozšiřující moduly (pokud jsou nutné pro AI 4–20 mA nebo AO 0–10 V): `Pro zpracování proudové smyčky 4–20 mA lze využít signální desku SB 1231 AI / u AO 0-10 V není rozšiřující modul potřeba`
+     - Napájecí napětí zvolené jednotky: `24 V DC`
+     - Jak je vyřešeno odesílání dat na dispečink: `Integrovaný komunikační port PROFINET / Ethernet na CPU, doplněný o průmyslový LTE/GSM router (např. Siemens SCALANCE nebo průmyslová brána pro Modbus TCP), který zajišťuje bezdrátový přenos dat na centrální dispečink vodáren`
+     - Odkaz na technický list (datasheet): `Siemens Industry Online Support - Datasheet CPU 1214C`
+     - Odkazy na další použité zdroje: `https://sieportal.siemens.com/en-cl/products-services/10045652?tree=CatalogTree / [TIA Portal Hardware Catalog](https://support.industry.siemens.com/cs/products/6es7214-1hg40-0xb0/cpu-1214c-dc-dc-relay-14di-10do-2ai?pid=160803&mlfb=6ES7214-1HG40-0XB0&mfn=ps&lc=ru-BY) / https://gemini.google.com/app/7280d17a23081ce4?hl=cs`
 
 3. **Technické ověření z datasheetu:**
-   - Zvládá zvolená jednotka garantovaný provoz při -20 °C? Doložte údaj z datasheetu: `...`
-   - Jakým způsobem spínáte cívku stykače 230 V AC (reléový výstup jednotky přímo, nebo přes pomocné mezilehlé relé)? Zdůvodněte: `...`
+   - Zvládá zvolená jednotka garantovaný provoz při -20 °C? Doložte údaj z datasheetu: `-40 +62 °C`
+   - Jakým způsobem spínáte cívku stykače 230 V AC (reléový výstup jednotky přímo, nebo přes pomocné mezilehlé relé)? Zdůvodněte: `Oddělením výkonové části od PLC chráníme vnitřní reléové kontakty jednotky před induktivní zátěží a opotřebením při spínání 230 V AC. Mezilehlé relé na liště DIN je navíc levně vyměnitelné v případě přepětí či poruchy na cívce hlavního stykače čerpadla.`
 
 4. **Krytí rozváděče:**
    - Jaké minimální krytí **IP skříně** zvolíte? Jak v rozváděči zajistíte provoz v mrazech -20 °C a v letních vedrech?
-     - Zvolené krytí rozváděče: `...`
-     - Teplotní management skříně: `...`
+     - Zvolené krytí rozváděče: `IP65`
+     - Teplotní management skříně: `Provoz v mrazech (-20 °C): V rozváděči musí být instalováno topné těleso s termostatem (např. PTC topení s ventilátorem), které udržuje vnitřní teplotu nad bodem mrazu (např. min. +5 °C), aby nedocházelo ke kondenzaci vlhkosti a zamrznutí elektroniky či relé.
+
+Provoz v letních vedrech (+45 °C na slunci): Skříň by měla být opatřena venkovní stříškou (sluneční clonou) proti přímému slunečnímu záření, případně filtračním ventilátorem s výstupním filtrem (s krytím IP 54/55 a vložkou proti prachu) nebo chladicí jednotkou, pokud vnitřní tepelné ztráty prvků (zdroj, měnič, PLC) překročí limity okolí.`
 
 > **Kritéria hodnocení úlohy 4 (bodování a známka):**
 > - :star: **Správnost I/O bilance a dimenzování (30 %):** Správný součet všech signálů, korektní rozlišení reléových vs. tranzistorových výstupů a správné započtení rezervy min. 20 %.
