@@ -210,7 +210,7 @@ Jste v roli projektanta automatizace. Zákazník poptává zhotovení řízení 
 
 | Typ signálu | Požadavek aplikace (kusy) | Popis signálů v aplikaci | Počet po započtení rezervy (+20 %) |
 | :--- | :--- | :--- | :--- |
-| **Digitální vstup (DI)** | `4` | `3× plovákový spínač (suchoběh, zapínání, přepad) + 1× porucha termistoru motoru` | `5 (reálně 14 na CPU)` |
+| **Digitální vstup (DI)** | `4` | `3× plovákový spínač (suchoběh, zapínání, přepad) + 1× ochrana proti poruše termistoru motoru` | `5 (reálně 14 na CPU)` |
 | **Digitální výstup (DO) – reléový** | `2` | `2× ovládání cívki stykačů čerpadlopohonů (230 V AC)` | `3 (reálně 10 na CPU)` |
 | **Digitální výstup (DO) – tranzistorový** | `1` | `1× opticko-akustický maják (24 V DC / 0,3 A)` | `2` |
 | **Analogový vstup (AI)** | `1` | `1× hydrostatická sonda výšky hladiny (4–20 mA)` | `2` |
@@ -219,17 +219,17 @@ Jste v roli projektanta automatizace. Zákazník poptává zhotovení řízení 
 2. **Výběr konkrétního hardwaru z katalogu výrobce:**
    - Navrhněte konkrétní přístroj z praxe (např. *Siemens LOGO! 24RCE + rozšiřující moduly*, *Siemens S7-1200 CPU 1212C/1214C DC/DC/RLY*, *Schneider Modicon M221*, *Eaton easyE4-UC-12RC1*, *WAGO 750*, případně průmyslový IoT kontrolér typu *UniPi Neuron*).
    - Uveďte:
-     - Výrobce a přesný model CPU: `Siemens SIMATIC S7-1200, CPU 1214C DC/DC/RLY`
-     - Objednací kód (Part Number / Order Code): `6ES7214-1HG40-0XB0 / 6AG1214-1HG40-5XB0`
-     - Rozšiřující moduly (pokud jsou nutné pro AI 4–20 mA nebo AO 0–10 V): `Pro zpracování proudové smyčky 4–20 mA lze využít signální desku SB 1231 AI / u AO 0-10 V není rozšiřující modul potřeba`
-     - Napájecí napětí zvolené jednotky: `24 V DC`
-     - Jak je vyřešeno odesílání dat na dispečink: `Integrovaný komunikační port PROFINET / Ethernet na CPU, doplněný o průmyslový LTE/GSM router (např. Siemens SCALANCE nebo průmyslová brána pro Modbus TCP), který zajišťuje bezdrátový přenos dat na centrální dispečink vodáren`
-     - Odkaz na technický list (datasheet): `Siemens Industry Online Support - Datasheet CPU 1214C`
-     - Odkazy na další použité zdroje: `https://sieportal.siemens.com/en-cl/products-services/10045652?tree=CatalogTree / [TIA Portal Hardware Catalog](https://support.industry.siemens.com/cs/products/6es7214-1hg40-0xb0/cpu-1214c-dc-dc-relay-14di-10do-2ai?pid=160803&mlfb=6ES7214-1HG40-0XB0&mfn=ps&lc=ru-BY) / https://gemini.google.com/app/7280d17a23081ce4?hl=cs`
+     - Výrobce a přesný model CPU: `Schneider Electric Modicon M221, model TM221C24R`
+     - Objednací kód (Part Number / Order Code): `TM221C24R`
+     - Rozšiřující moduly (pokud jsou nutné pro AI 4–20 mA nebo AO 0–10 V): `Integrované vstupy a výstupy lze rozšířit pomocí modulů řady Modicon TM3 (např. analogový vstupní modul TM3AI2G pro 4–20 mA, pokud je potřeba). Pro čistě binární stavy (plováky + termistor) má základní jednotka dostatek diskrétních vstupů.`
+     - Napájecí napětí zvolené jednotky: `24 V DC (existuje i verze na 230V v AC, ale v tomto případě použijeme 24 V v DC kvůli spolehlivosti a standardu v průmyslu.`
+     - Jak je vyřešeno odesílání dat na dispečink: `Integrovaný Ethernet port s podporou protokolů pro vzdálený přístup a vizualizaci (MQTT, Modbus TCP), připojený do průmyslového LTE routeru.`
+     - Odkaz na technický list (datasheet): `https://www.farnell.com/datasheets/2573995.pdf`
+     - Odkazy na další použité zdroje: `(https://www.farnell.com/datasheets/2573995.pdf) / https://gemini.google.com/app/bc5145eeee8ca0cc?hl=cs`
 
 3. **Technické ověření z datasheetu:**
-   - Zvládá zvolená jednotka garantovaný provoz při -20 °C? Doložte údaj z datasheetu: `-40 +62 °C`
-   - Jakým způsobem spínáte cívku stykače 230 V AC (reléový výstup jednotky přímo, nebo přes pomocné mezilehlé relé)? Zdůvodněte: `Oddělením výkonové části od PLC chráníme vnitřní reléové kontakty jednotky před induktivní zátěží a opotřebením při spínání 230 V AC. Mezilehlé relé na liště DIN je navíc levně vyměnitelné v případě přepětí či poruchy na cívce hlavního stykače čerpadla.`
+   - Zvládá zvolená jednotka garantovaný provoz při -20 °C? Doložte údaj z datasheetu: `Jednotka zvládá teplotu -25 °C až +70 °C `
+   - Jakým způsobem spínáte cívku stykače 230 V AC (reléový výstup jednotky přímo, nebo přes pomocné mezilehlé relé)? Zdůvodněte: `(Použití pomocného/mezilehlého relé na DIN lištu namísto přímého spínání 230 V AC vnitřními kontakty PLC) je z hlediska dlouhodobé životnosti a spolehlivosti zcela správná a profesionální praxe.`
 
 4. **Krytí rozváděče:**
    - Jaké minimální krytí **IP skříně** zvolíte? Jak v rozváděči zajistíte provoz v mrazech -20 °C a v letních vedrech?
